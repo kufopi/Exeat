@@ -1,0 +1,35 @@
+{% extends 'ground.html' %}
+
+{% block title %}HOD Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>{{ hoduser.name }}'s Dashboard</h2>
+    <h3>Department: {{ user_role.department }}</h3>
+
+    <h3>Exeat Requests</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in requests %}
+            <tr>
+                <td>{{ request.student.name }}</td>
+                <td>{{ request.reason|truncatewords:7 }}</td>
+                <td>{{ request.status }}</td>
+                <td>
+                    <a href="{% url 'approve_exeat_request' request.id %}" class="btn btn-success btn-sm">Approve</a>
+                    <a href="{% url 'reject_exeat_request' request.id %}" class="btn btn-danger btn-sm">Reject</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Student Exeat Management System{% endblock %}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 60px;
+        }
+        .navbar-custom {
+            background-color: #9370db;
+        }
+        footer { 
+            background-color: #e6e6fa; 
+            padding: 10px 0; 
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">Exeat System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                {% if user.is_authenticated %}
+                <ul class="navbar-nav ms-auto">
+                    
+                    {% if user_role.role == 'HeadOfDepartment' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'hod_dashboard' %}">Hod Dashboard</a>
+                        </li>
+                    {% elif user_role.role == 'StudentAffairs' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'student_affairs_dashboard' %}">StudentAffairs Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'create_emergency_exeat_by_officer' %}">Emergency</a>
+                        </li>
+
+                    {% elif user_role.role == 'HallWarden'  and user_role.gender == 'Female' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'student_affairs_dashboard' %}">Female HallWarden Dashboard</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'pending_returns_female_warden' %}">Pending Returnee</a>
+                        </li>
+
+                    {% elif user_role.role == 'HallWarden' and user_role.gender == 'Male' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'student_affairs_dashboard' %}">Male HallWarden Dashboard</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'pending_returns_male_warden' %}">Pending Male Returnee/a>
+                        </li>
+
+                    {% else %}   
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'student_dashboard' %}">Student Dashboard</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'create_exeat_request' %}">New Request</a>
+                        </li>
+                    {% endif %}
+                   
+                
+                            
+                       
+                            
+                    <li class="nav-item">
+                    <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;"> 
+                        {% csrf_token %} 
+                    </form> 
+                    <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                    </li>
+                    {% endif %}
+                   
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% block content %}
+        <!-- Content for each page will go here -->
+        {% endblock %}
+    </div>
+
+    <footer class="footer py-3">
+        <div class="container">
+            <span class="text-muted">© 2024 Student Exeat Management System
+                 by Chrisland University DucthLabs</span>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,62 @@
+{% extends 'ground.html' %}
+
+{% block title %}Student Affairs Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Student Affairs Dashboard</h2>
+
+    <h3>Pending Exeat Requests</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Reason</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in pending_exeat_requests %}
+            <tr>
+                <td>{{ request.student.name }}</td>
+                <td>{{ request.reason }}</td>
+                <td>{{ request.start_date }}</td>
+                <td>{{ request.end_date }}</td>
+                <td>{{ request.status }}</td>
+                <td>
+                    <a href="{% url 'approve_student_affairs_exeat_request' request.id %}" class="btn btn-success btn-sm">Approve</a>
+                    <a href="{% url 'reject_exeat_request' request.id %}" class="btn btn-danger btn-sm">Reject</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Rejected Exeat Requests</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Reason</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Rejection Reason</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in rejected_requests %}
+            <tr>
+                <td>{{ request.student.name }}</td>
+                <td>{{ request.reason }}</td>
+                <td>{{ request.start_date }}</td>
+                <td>{{ request.end_date }}</td>
+                <td>{{ request.rejection_reason }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
